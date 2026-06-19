@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Control Panel</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+body{
+    background:#050816;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+/* Background */
+#bg{
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at top,#163c96 0%,#081126 40%,#050816 100%);
+}
+
+.particle{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(120,180,255,.15);
+    animation:float linear infinite;
+}
+
+@keyframes float{
+    from{
+        transform:translateY(120vh);
+        opacity:0;
+    }
+
+    15%{
+        opacity:1;
+    }
+
+    100%{
+        transform:translateY(-20vh);
+        opacity:0;
+    }
+}
+
+.panel{
+    width:min(92vw,700px);
+    background:rgba(10,15,40,.92);
+    backdrop-filter:blur(15px);
+    border-radius:24px;
+    padding:24px;
+    position:relative;
+    z-index:10;
+
+    border:1px solid rgba(0,150,255,.2);
+
+    box-shadow:
+    0 0 40px rgba(0,120,255,.2),
+    inset 0 0 15px rgba(255,255,255,.03);
+}
+
+.avatar{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    border:2px solid #1875ff;
+    position:absolute;
+    left:20px;
+    top:20px;
+}
+
+.counter{
+    position:absolute;
+    top:20px;
+    right:20px;
+
+    color:#00d8ff;
+
+    border:2px solid #00d8ff;
+
+    padding:8px 16px;
+
+    border-radius:999px;
+
+    font-weight:700;
+}
+
+.logo{
+    text-align:center;
+    color:#1875ff;
+    font-size:42px;
+    font-weight:900;
+    margin-top:20px;
+}
+
+.line{
+    width:130px;
+    height:4px;
+    background:#1875ff;
+    border-radius:20px;
+    margin:10px auto 25px;
+
+    box-shadow:0 0 10px #1875ff;
+}
+
+.main-card{
+    border:2px solid #1875ff;
+    border-radius:18px;
+    padding:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.left{
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+
+.icon{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    border:2px solid #1875ff;
+}
+
+.title{
+    color:#ffc940;
+    font-size:24px;
+    font-weight:800;
+}
+
+.desc{
+    color:#79adff;
+    font-size:13px;
+}
+
+.tabs{
+    display:flex;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.tab{
+    flex:1;
+    text-align:center;
+    padding:12px;
+    border-radius:12px;
+    font-weight:700;
+}
+
+.orange{
+    border:2px solid #ffb82c;
+    color:#ffb82c;
+}
+
+.blue{
+    border:2px solid #1875ff;
+    color:#1875ff;
+}
+
+.row{
+    background:rgba(255,255,255,.03);
+    height:58px;
+    border-radius:12px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:0 16px;
+
+    margin-bottom:10px;
+}
+
+.label{
+    color:white;
+    font-weight:700;
+}
+
+.right{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.status{
+    width:40px;
+    text-align:center;
+    color:#aaa;
+    font-weight:700;
+}
+
+/* Toggle */
+
+.switch{
+    width:58px;
+    height:32px;
+
+    border-radius:999px;
+
+    background:#555;
+
+    position:relative;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.switch::before{
+
+    content:"";
+
+    width:24px;
+    height:24px;
+
+    border-radius:50%;
+
+    background:#ffd45e;
+
+    position:absolute;
+
+    top:4px;
+    left:4px;
+
+    transition:.25s;
+}
+
+.switch.active{
+    background:#007aff;
+
+    box-shadow:
+    0 0 15px #007aff,
+    0 0 25px #007aff;
+}
+
+.switch.active::before{
+    left:30px;
+    background:white;
+}
+
+.console{
+    margin-top:15px;
+
+    border:2px solid #1875ff;
+
+    border-radius:16px;
+
+    padding:14px;
+
+    min-height:140px;
+}
+
+.console-title{
+    color:#00d8ff;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.log{
+    color:#00ff66;
+    font-size:13px;
+    line-height:1.7;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<div class="panel">
+
+    <div class="avatar"></div>
+
+    <div class="counter" id="counter">
+        ACTIVE 0/7
+    </div>
+
+    <div class="logo">Nguyen Cuong</div>
+
+    <div class="line"></div>
+
+    <div class="main-card">
+
+        <div class="left">
+
+            <div class="icon"></div>
+
+            <div>
+                <div class="title">Kích Hoạt</div>
+                <div class="desc">Bảng điều khiển giao diện</div>
+            </div>
+
+        </div>
+
+        <div class="switch"></div>
+
+    </div>
+
+    <div class="tabs">
+        <div class="tab orange">Free Fire Thường</div>
+        <div class="tab blue">Free Fire Max</div>
+    </div>
+
+    <div class="row">
+        <div class="label">Aimbot</div>
+        <div class="right">
+            <div class="status">OFF</div>
+            <div class="switch"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="label">HeadLock</div>
+        <div class="right">
+            <div class="status">OFF</div>
+            <div class="switch"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="label">AimMode</div>
+        <div class="right">
+            <div class="status">OFF</div>
+            <div class="switch"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="label">Exactly++</div>
+        <div class="right">
+            <div class="status">OFF</div>
+            <div class="switch"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="label">Sensivity Pro</div>
+        <div class="right">
+            <div class="status">OFF</div>
+            <div class="switch"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="label">Fix FPS</div>
+        <div class="right">
+            <div class="status">OFF</div>
+            <div class="switch"></div>
+        </div>
+    </div>
+
+    <div class="console">
+
+        <div class="console-title">SYSTEM LOG</div>
+
+        <div class="log" id="log">
+            > READY...
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+window.onload = function(){
+
+    const switches =
+    document.querySelectorAll(".switch");
+
+    const counter =
+    document.getElementById("counter");
+
+    const log =
+    document.getElementById("log");
+
+    function updateCounter(){
+
+        const active =
+        document.querySelectorAll(".switch.active").length;
+
+        counter.innerHTML =
+        "ACTIVE " + active + "/" + switches.length;
+    }
+
+    switches.forEach(function(sw,index){
+
+        sw.addEventListener("click",function(){
+
+            this.classList.toggle("active");
+
+            const status =
+            this.parentElement.querySelector(".status");
+
+            if(status){
+
+                if(this.classList.contains("active")){
+
+                    status.innerHTML="ON";
+                    status.style.color="#00ff66";
+
+                    log.innerHTML +=
+                    "<br>> Đã bật tùy chọn " + (index+1);
+
+                }else{
+
+                    status.innerHTML="OFF";
+                    status.style.color="#aaa";
+
+                    log.innerHTML +=
+                    "<br>> Đã tắt tùy chọn " + (index+1);
+                }
+            }
+
+            updateCounter();
+
+        });
+
+    });
+
+    updateCounter();
+};
+
+/* Particles */
+
+const bg = document.getElementById("bg");
+
+for(let i=0;i<50;i++){
+
+    let p=document.createElement("div");
+
+    p.className="particle";
+
+    let size=Math.random()*18+6;
+
+    p.style.width=size+"px";
+    p.style.height=size+"px";
+
+    p.style.left=Math.random()*100+"vw";
+
+    p.style.animationDuration=
+    (Math.random()*12+8)+"s";
+
+    p.style.animationDelay=
+    (-Math.random()*10)+"s";
+
+    bg.appendChild(p);
+}
+
+</script>
+
+</body>
+</html>
